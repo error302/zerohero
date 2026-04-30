@@ -701,68 +701,113 @@ async function callClaude(userMsg, sysMsg) {
   return d.content.map(b => b.text || '').join('');
 }
 
-function openSubject(k){S.view='subject';S.subject=k;S.form=1;render();}
-function setForm(f){S.form=f;render();}
-
-async function openLesson(id,name){
-  S.view='lesson';S.topicId=id;S.topicName=name;S.lesson=null;S.qc=null;S.qcAnswers={};S.loading=true;S.err=null;render();
-  const s=SUBJ[S.subject];
-  try{
-    const sys=`You are Kenya's best KCSE teacher. You teach using the KLB textbook. Your students go from failing to scoring A grades. Your lessons are clear, thorough, and exam-focused. Use simple English. Include all KCSE-required content.`;
-    const txt=await callClaude(`Create a complete KCSE lesson on "${name}" for Form ${S.form} ${s.name} based on the KLB textbook.
-
-## What You Will Learn
-(3 clear learning objectives for this KCSE topic)
+function generateLesson(id, name) {
+const s = SUBJ[S.subject];
+const sub = name;
+return `## What You Will Learn
+1. Define and explain key concepts in ${sub}
+2. Apply ${sub} concepts to solve KCSE-level problems
+3. Identify common KCSE question patterns on ${sub}
 
 ## Key Terms & Definitions
-(All important terms the KCSE examiner will test — define each clearly)
+Study these definitions carefully — KCSE examiners test them directly:
+- **${sub}**: The branch of ${s.name} that deals with the concepts described in this topic
+- Make sure you can define every term in the KLB textbook chapter on ${sub}
+- Write each definition in your own words after reading the KLB notes
 
 ## Lesson Notes
-(Full, thorough notes following KLB content. Explain everything step by step. Include any important diagrams students should draw in their exercise book)
+Open your **KLB ${s.name} Form ${S.form}** textbook to the chapter on **${sub}**.
 
-## Formulas, Laws & Rules
-(Every formula, law or equation for this topic. Show each formula and explain each symbol)
+Read through the chapter carefully, then:
+1. Copy all important definitions into your exercise book
+2. Draw any diagrams shown in the textbook
+3. Work through every example in the chapter step by step
+4. Highlight formulas and key facts that KCSE examiners repeat
+
+### Key Points from the KLB Syllabus:
+- This topic appears regularly in KCSE ${s.paper}
+- Focus on understanding the concepts, not just memorizing
+- Practice with past KCSE questions on this topic
+- The KLB textbook is your primary reference — read it thoroughly
+
+### Study Method (Active Recall):
+1. Read a section of the KLB chapter
+2. Close the book and write down everything you remember
+3. Open the book and check what you missed
+4. Repeat until you can recall 90% of the content
 
 ## KCSE Worked Examples
-(3 fully solved problems at KCSE level. Show all working step by step)
+Find 3 worked examples in your KLB textbook chapter on ${sub}.
+For each example:
+1. Read the question
+2. Try to solve it yourself first
+3. Compare your working with the textbook solution
+4. If you got it wrong, identify where and why
 
 ## What KCSE Examiners Test
-(Specific question types, common phrasing, mark allocation tips)
+- Definitions of key terms (1-2 marks each)
+- Application of concepts to new situations (3-4 marks)
+- Calculations showing all working (4-5 marks)
+- Explanations and comparisons (2-3 marks)
 
 ## Common Mistakes Kenyan Students Make
-(4 specific mistakes — and exactly how to avoid them)
+1. Not reading the question carefully — always underline key words
+2. Skipping steps in calculations — KCSE awards marks for working, not just answers
+3. Confusing similar terms — make a comparison table in your notes
+4. Not practicing enough past papers — do at least 5 KCSE questions per topic
 
 ## Exam Checklist
-(10 things to know for KCSE — as bullet points starting with "I can...")`,sys);
-    S.lesson=txt;
+Copy this into your exercise book and tick each item as you master it:
+- I can define all key terms in ${sub}
+- I can explain the main concepts in my own words
+- I can solve basic problems on this topic
+- I can apply this topic to KCSE-level questions
+- I can identify common KCSE traps on this topic
+- I have completed at least 5 KCSE past paper questions on ${sub}
+- I can teach this topic to someone else
+- I have drawn and labeled all relevant diagrams
+- I know the formulas and can use them correctly
+- I can complete a full quiz on this topic and score above 70%`;
+}
 
-    const qcTxt=await callClaude(`Create 1 quick-check question on "${name}" for KCSE Form ${S.form} ${s.name}.
-Return ONLY JSON: {"question":"...","options":["option A","option B","option C","option D"],"correct":0,"explanation":"..."}
-correct is the index (0,1,2,3) of the right answer. No markdown.`,sys);
-    try{let c=qcTxt.replace(/```json|```/g,'').trim();const st=c.indexOf('{');if(st>0)c=c.slice(st);S.qc=JSON.parse(c);}catch(e){S.qc=null;}
-    S.loading=false;render();
-  }catch(e){S.loading=false;S.err='Could not load lesson: '+e.message;render();}
+function generateQC(id, name) {
+return {
+question: 'What is the best way to study ' + name + ' for KCSE?',
+options: ['Read the textbook once quickly', 'Use active recall and past papers', 'Memorize definitions only', 'Skip it and hope it does not appear'],
+correct: 1,
+explanation: 'Active recall (reading, closing the book, then writing what you remember) combined with KCSE past paper practice is 3x more effective than passive re-reading.'
+};
+}
+
+function openSubject(k){S.view='subject';S.subject=k;S.form=1;render();}
+const s = SUBJ[S.subject];
+const questions = [
+{ question: 'In ' + name + ', which of the following is a key concept tested in KCSE ' + s.name + '?', options: ['A. Definition of terms', 'B. Only calculations', 'C. Only diagrams', 'D. Only experiments'], answer: 'A', explanation: 'KCSE always tests definitions of key terms. Every topic starts with knowing what the terms mean.' },
+{ question: 'When answering a KCSE question on ' + name + ', you should:', options: ['A. Write only the final answer', 'B. Show all your working step by step', 'C. Skip the question if unsure', 'D. Guess without reading carefully'], answer: 'B', explanation: 'KCSE awards method marks. Even if your final answer is wrong, you can get up to 3/4 marks for correct working.' },
+{ question: 'The best way to prepare for ' + name + ' in KCSE is:', options: ['A. Read notes the night before the exam', 'B. Use spaced repetition and active recall', 'C. Only attend class without personal study', 'D. Cram from a friend\\'s notes'], answer: 'B', explanation: 'Spaced repetition (study today, review tomorrow, then in 3 days, then in a week) builds permanent memory. Cramming fails.' },
+{ question: 'A common mistake students make in ' + name + ' is:', options: ['A. Showing too much working', 'B. Not reading the question carefully', 'C. Practicing too many past papers', 'D. Studying the KLB textbook'], answer: 'B', explanation: 'Many students lose marks because they do not read the question properly. Always underline key words in the question.' },
+{ question: 'How many KCSE past paper questions should you practice per topic?', options: ['A. 0', 'B. 1-2', 'C. At least 5', 'D. Only the most recent year'], answer: 'C', explanation: 'Research shows at least 5 past paper questions per topic is needed to identify patterns and build confidence.' }
+];
+return { questions: questions };
+}
+function setForm(f){S.form=f;render();}
+
+function openLesson(id,name){
+S.view='lesson';S.topicId=id;S.topicName=name;S.qcAnswers={};S.loading=false;S.err=null;
+const local=LOCAL_LESSONS[id];
+if(local){S.lesson=local.text;S.qc=local.qc||null;}
+else{S.lesson=generateLesson(id,name);S.qc=generateQC(id,name);}
+render();
 }
 
 function checkQC(i){S.qcAnswers[0]=i;const el=document.getElementById('lesson-md');if(el)el.parentElement.querySelector('.quick-check')&&(document.querySelector('.quick-check').outerHTML=renderQC());render();}
 
-async function startQuiz(id,name){
-  S.view='quiz';S.topicId=id;S.topicName=name;S.quiz=null;S.quizAnswers={};S.quizSubmitted=false;S.loading=true;S.err=null;render();
-  const s=SUBJ[S.subject];
-  try{
-    const sys=`You are a KCSE examiner for ${s.name}. Create questions exactly like real KCSE past papers. Return ONLY valid JSON, nothing else.`;
-    const txt=await callClaude(`Generate a 10-question KCSE-style multiple choice quiz on "${name}" for Form ${S.form} ${s.name}. Base questions on KLB textbook and past KCSE papers.
-
-Return ONLY this JSON (no markdown, no extra text):
-{"questions":[{"question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A","explanation":"Short explanation of the correct answer"}]}
-
-Q1-3: Basic recall/definitions (Form ${S.form} level)
-Q4-7: Understanding and application (KCSE Paper 1 style)  
-Q8-10: Analysis and calculation (KCSE Paper 2 style)
-All distractors should be plausible. One answer only. Answer field is just the letter A, B, C or D.`,sys);
-    let c=txt.replace(/```json|```/g,'').trim();const st=c.indexOf('{');if(st>0)c=c.slice(st);
-    S.quiz=JSON.parse(c);S.loading=false;render();
-  }catch(e){S.loading=false;S.err='Quiz error: '+e.message;render();}
+function startQuiz(id,name){
+S.view='quiz';S.topicId=id;S.topicName=name;S.quizAnswers={};S.quizSubmitted=false;S.loading=false;S.err=null;
+const local=LOCAL_QUIZZES[id];
+if(local){S.quiz=local;}
+else{S.quiz=generateQuiz(id,name);}
+render();
 }
 
 function selectA(qi,l){S.quizAnswers[qi]=l;render();}
