@@ -1,0 +1,10 @@
+{
+  "math": {
+    "forms": ["algebra", "geometry"],
+    "topics": ["equations", "shapes"]
+  },
+  "biology": {
+    "forms": ["cell", "genetics"],
+    "topics": ["cell structure", "DNA"]
+  }
+}
