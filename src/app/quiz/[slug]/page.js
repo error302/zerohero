@@ -31,7 +31,7 @@ export default async function QuizPage({ params }) {
         questionType: "MCQ",
         options: JSON.stringify(["It improves efficiency", "It has no effect", "It increases mass", "It reduces volume"]),
         correctAnswer: "It improves efficiency",
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Dummy video for demonstration
+        videoUrl: "https://www.youtube.com/embed/Pft2xEuJc4Q" // Tyler DeWitt - Introduction to Moles
       },
       {
         id: "dummy-2",
