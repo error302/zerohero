@@ -1,0 +1,10 @@
+{
+  "title": "Intro to Math",
+  "content": "<p>Welcome to math.</p>",
+  "quickCheck": [
+    {
+      "question": "2+2=?",
+      "answer": "4"
+    }
+  ]
+}

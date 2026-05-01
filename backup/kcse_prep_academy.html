@@ -1,0 +1,604 @@
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+.app{font-family:var(--font-sans);color:var(--color-text-primary);min-height:700px}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);position:sticky;top:0;z-index:10}
+.logo{font-weight:500;font-size:14px;letter-spacing:-0.2px}.logo em{font-style:normal;color:#185FA5}
+.breadcrumb{flex:1;font-size:12px;color:var(--color-text-secondary)}
+.breadcrumb b{color:var(--color-text-primary);font-weight:500}
+.btn-back{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:4px 10px;font-size:12px;cursor:pointer;color:var(--color-text-secondary)}
+.btn-back:hover{background:var(--color-background-secondary)}
+.btn-sched{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:4px 10px;font-size:12px;cursor:pointer;color:var(--color-text-secondary)}
+.btn-sched:hover{background:var(--color-background-secondary)}
+.content{padding:18px}
+.hero{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:18px 20px;margin-bottom:18px;border:0.5px solid var(--color-border-tertiary)}
+.hero-title{font-size:16px;font-weight:500;margin-bottom:4px}
+.hero-sub{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+.motiv{font-size:13px;font-weight:500;color:#185FA5;margin-top:8px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;cursor:pointer;transition:border-color 0.15s}
+.card:hover{border-color:var(--color-border-primary)}
+.card-icon{font-size:20px;margin-bottom:8px;display:block}
+.card-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.pbar{height:4px;background:var(--color-background-secondary);border-radius:4px;margin-top:10px;overflow:hidden}
+.pfill{height:100%;border-radius:4px;transition:width 0.4s}
+.blue{background:#185FA5}.teal{background:#0F6E56}.green{background:#3B6D11}.amber{background:#854F0B}
+.tag{display:inline-block;font-size:11px;font-weight:500;padding:2px 8px;border-radius:var(--border-radius-md);margin-top:8px}
+.t-blue{background:#E6F1FB;color:#0C447C}.t-teal{background:#E1F5EE;color:#085041}
+.t-green{background:#EAF3DE;color:#27500A}.t-amber{background:#FAEEDA;color:#633806}
+.t-purple{background:#EEEDFE;color:#3C3489}
+.section-hd{font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.06em;text-transform:uppercase;margin:18px 0 10px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+.stat-n{font-size:20px;font-weight:500}.stat-l{font-size:11px;color:var(--color-text-secondary);margin-top:3px}
+.form-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.form-tab{padding:6px 14px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);transition:all 0.15s}
+.form-tab.active{background:#185FA5;color:#fff;border-color:#185FA5}
+.form-tab.active.teal-tab{background:#0F6E56;border-color:#0F6E56}
+.form-tab.active.green-tab{background:#3B6D11;border-color:#3B6D11}
+.form-tab.active.amber-tab{background:#854F0B;border-color:#854F0B}
+.topic-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;cursor:pointer;transition:all 0.15s;position:relative}
+.topic-card:hover{border-color:var(--color-border-primary)}
+.topic-card.done{border-left:3px solid #1D9E75}
+.tc-name{font-size:13px;font-weight:500;margin-bottom:4px;padding-right:40px}
+.tc-sub{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+.done-badge{position:absolute;top:12px;right:12px;font-size:11px;color:#1D9E75;font-weight:500}
+.tc-btns{display:flex;gap:6px;margin-top:10px}
+.btn-sm-p{background:#185FA5;color:#fff;border:none;border-radius:var(--border-radius-md);padding:4px 10px;font-size:12px;cursor:pointer;font-weight:500}
+.btn-sm-p:hover{background:#0C447C}
+.btn-sm-s{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:4px 10px;font-size:12px;cursor:pointer;color:var(--color-text-primary)}
+.btn-sm-s:hover{background:var(--color-background-secondary)}
+.loading-box{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:14px;color:var(--color-text-secondary);font-size:14px}
+.spinner{width:26px;height:26px;border:2px solid var(--color-border-tertiary);border-top-color:#185FA5;border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lesson-wrap{max-width:660px}
+.lesson-wrap h2{font-size:15px;font-weight:500;margin:18px 0 8px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.lesson-wrap h3{font-size:13px;font-weight:500;margin:12px 0 5px;color:#185FA5}
+.lesson-wrap p{font-size:13px;line-height:1.8;margin-bottom:8px}
+.lesson-wrap ul,.lesson-wrap ol{font-size:13px;line-height:1.8;margin:6px 0 8px 18px}
+.lesson-wrap li{margin-bottom:3px}
+.lesson-wrap code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:4px;padding:1px 5px;font-family:var(--font-mono);font-size:12px}
+.lesson-wrap strong{font-weight:500}
+.formula-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 14px;margin:8px 0;font-family:var(--font-mono);font-size:13px;text-align:center}
+.quick-check{background:#E6F1FB;border-radius:var(--border-radius-md);padding:14px 16px;margin:16px 0}
+.qc-title{font-size:12px;font-weight:500;color:#0C447C;margin-bottom:8px}
+.qc-q{font-size:13px;font-weight:500;margin-bottom:8px}
+.qc-opt{display:block;width:100%;text-align:left;padding:7px 11px;margin:4px 0;border:0.5px solid #B5D4F4;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;background:#fff;color:var(--color-text-primary);transition:all 0.1s}
+.qc-opt:hover{background:#E6F1FB}
+.qc-opt.qc-correct{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+.qc-opt.qc-wrong{background:#FAECE7;border-color:#D85A30;color:#4A1B0C}
+.qc-feedback{font-size:12px;margin-top:8px;font-weight:500}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.btn-p{background:#185FA5;color:#fff;border:none;border-radius:var(--border-radius-md);padding:8px 16px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-p:hover{background:#0C447C}
+.btn-s{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 16px;font-size:13px;cursor:pointer;color:var(--color-text-primary)}
+.btn-s:hover{background:var(--color-background-secondary)}
+.quiz-q{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:10px}
+.quiz-qtext{font-size:13px;font-weight:500;margin-bottom:10px;line-height:1.7}
+.quiz-opt{display:block;width:100%;text-align:left;padding:8px 12px;margin:4px 0;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary);transition:all 0.1s}
+.quiz-opt:hover{border-color:var(--color-border-primary);background:var(--color-background-secondary)}
+.quiz-opt.sel{border-color:#185FA5;background:#E6F1FB;color:#0C447C}
+.quiz-opt.right{border-color:#1D9E75;background:#E1F5EE;color:#085041}
+.quiz-opt.wrong{border-color:#D85A30;background:#FAECE7;color:#4A1B0C}
+.quiz-exp{font-size:12px;color:var(--color-text-secondary);margin-top:8px;padding:8px 10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);line-height:1.6}
+.score-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:24px;text-align:center;margin-bottom:16px}
+.score-n{font-size:44px;font-weight:500;line-height:1}
+.score-l{font-size:13px;color:var(--color-text-secondary);margin-top:4px}
+.score-msg{font-size:14px;font-weight:500;margin-top:12px}
+.sched-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.sched-tbl th{text-align:left;font-size:11px;font-weight:500;color:var(--color-text-secondary);letter-spacing:0.05em;text-transform:uppercase;padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sched-tbl td{padding:9px 10px;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top}
+.sched-tbl tr:last-child td{border-bottom:none}
+.pill{display:inline-block;font-size:10px;font-weight:500;padding:2px 6px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.tip-c{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;margin-bottom:8px}
+.tip-h{font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:3px}
+.tip-b{font-size:13px;line-height:1.6}
+.err{color:#A32D2D;font-size:13px;padding:10px 12px;background:#FCEBEB;border-radius:var(--border-radius-md);margin:8px 0}
+.q-status{font-size:12px;color:var(--color-text-secondary);margin-bottom:12px}
+.form-pbar{display:flex;gap:3px;margin-bottom:4px}
+.fpb{height:6px;border-radius:3px;flex:1;background:var(--color-background-secondary)}
+.fpb.filled{background:#185FA5}
+.form-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:12px}
+.kcse-badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:var(--border-radius-md);background:#EEEDFE;color:#3C3489;margin-left:6px;vertical-align:middle}
+.alert-bar{background:#FAEEDA;border:0.5px solid #FAC775;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;margin-bottom:16px;color:#412402}
+</style>
+
+<div class="app" id="app">
+  <div class="topbar">
+    <span class="logo"><em>KCSE</em> Prep Academy</span>
+    <span class="breadcrumb" id="breadcrumb"></span>
+    <button class="btn-back" id="backBtn" onclick="goBack()" style="display:none">← Back</button>
+    <button class="btn-sched" onclick="goSchedule()">📅 Timetable</button>
+  </div>
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const S={
+  view:'dashboard', subject:null, form:1, topicId:null, topicName:null,
+  lesson:null, quiz:null, qcAnswers:{}, quizAnswers:{}, quizSubmitted:false,
+  loading:false, err:null, progress:{}
+};
+
+const SUBJ={
+  math:{name:'Mathematics',icon:'∑',c:'blue',tag:'t-blue',paper:'Paper 1 & 2',
+    forms:{
+      1:[
+        {id:'natural-numbers',name:'Natural Numbers',sub:'Place value, number bases, HCF & LCM, prime numbers'},
+        {id:'fractions',name:'Fractions',sub:'Types, operations, mixed numbers, decimal fractions'},
+        {id:'decimals',name:'Decimals & Percentages',sub:'Operations, rounding off, significant figures, percentage change'},
+        {id:'squares-roots',name:'Squares, Roots & Indices',sub:'Squares, square roots, cubes, cube roots, powers & indices'},
+        {id:'algebra-intro',name:'Algebraic Expressions',sub:'Simplification, substitution, linear equations, forming equations'},
+        {id:'commercial1',name:'Commercial Arithmetic I',sub:'Profit & loss, discount, VAT, hire purchase, currency exchange'},
+        {id:'coordinates1',name:'Coordinate Geometry I',sub:'Cartesian plane, plotting points, distance between two points'},
+        {id:'geometry-constructions',name:'Geometrical Constructions',sub:'Using ruler & compass: angles, perpendiculars, bisectors, polygons'},
+        {id:'scale-drawing',name:'Scale Drawing',sub:'Reading scales, converting, maps & plans'},
+      ],
+      2:[
+        {id:'formulae-variations',name:'Formulae & Variations',sub:'Direct, inverse, joint and partial variation'},
+        {id:'sequences-series',name:'Sequences & Series',sub:'AP and GP, finding nth term, sum of series'},
+        {id:'indices-logs',name:'Indices & Logarithms',sub:'Laws of indices, log tables, natural logarithms'},
+        {id:'gradient-lines',name:'Gradient & Straight Lines',sub:'Gradient calculation, y=mx+c, equation of a line, perpendicular lines'},
+        {id:'reflection',name:'Reflection & Congruence',sub:'Line symmetry, reflection on axes, congruent triangles'},
+        {id:'rotation',name:'Rotation',sub:'Centre, angle, direction of rotation, combined transformations'},
+        {id:'similarity',name:'Similarity & Enlargement',sub:'Scale factor, similar triangles, area & volume scale factors'},
+        {id:'trig1',name:'Trigonometry I',sub:'Sine, cosine, tangent, angles 0°–360°, special angles'},
+        {id:'area-polygons',name:'Area of Polygons & Circles',sub:'Triangles, quadrilaterals, circles, sectors, segments'},
+        {id:'surface-volume1',name:'Surface Area & Volume I',sub:'Cubes, cuboids, cylinders, cones, pyramids, spheres'},
+      ],
+      3:[
+        {id:'quadratic-eqn',name:'Quadratic Equations & Expressions',sub:'Factorisation, completing the square, quadratic formula, graphs'},
+        {id:'remainder-theorem',name:'Remainder & Factor Theorem',sub:'Polynomial division, factorising cubics, remainder theorem'},
+        {id:'matrices1',name:'Matrices',sub:'Matrix operations, determinants, inverse of 2×2 matrix'},
+        {id:'linear-programming',name:'Linear Programming',sub:'Forming inequalities, feasible regions, objective function'},
+        {id:'trig2',name:'Trigonometry II',sub:'Sine rule, cosine rule, area of triangle, 3D problems'},
+        {id:'commercial2',name:'Commercial Arithmetic II',sub:'Simple & compound interest, depreciation, annuities, insurance'},
+        {id:'stats1',name:'Statistics I',sub:'Mean, median, mode, frequency distribution tables, histograms, ogive'},
+        {id:'loci',name:'Loci',sub:'Locus of a point, construction problems, regions'},
+        {id:'surds',name:'Surds & Further Logarithms',sub:'Simplifying surds, rationalising denominators, log equations'},
+      ],
+      4:[
+        {id:'matrices-transform',name:'Matrices & Transformations',sub:'Transformations using matrices, combined transformations, inverse matrix'},
+        {id:'stats2',name:'Statistics II',sub:'Standard deviation, quartiles, cumulative frequency, box plots'},
+        {id:'probability',name:'Probability',sub:'Simple, combined events, tree diagrams, conditional probability'},
+        {id:'vectors',name:'Vectors',sub:'Column vectors, position vectors, magnitude, midpoint, section formula'},
+        {id:'differentiation',name:'Differentiation',sub:'dy/dx, gradient of curve, turning points, maxima & minima'},
+        {id:'integration',name:'Integration',sub:'Indefinite & definite integrals, area under curve, kinematics'},
+        {id:'trig3',name:'Trigonometry III',sub:'Bearings, angles of elevation & depression, 3D trigonometry'},
+        {id:'longitudes-latitudes',name:'Longitudes & Latitudes',sub:'Great circles, small circles, distance on earth\'s surface'},
+      ]
+    }
+  },
+  biology:{name:'Biology',icon:'🧬',c:'green',tag:'t-green',paper:'Paper 1, 2 & 3',
+    forms:{
+      1:[
+        {id:'intro-bio',name:'Introduction to Biology',sub:'Characteristics of living things, branches of biology, biology apparatus'},
+        {id:'cell-bio',name:'Cell Structure & Organisation',sub:'Plant & animal cells, organelles, tissues, organs, organ systems'},
+        {id:'classification',name:'Classification of Living Things',sub:'Kingdoms, phyla, binomial nomenclature, keys'},
+        {id:'nutrition-plants',name:'Nutrition in Plants',sub:'Photosynthesis, mineral salts, leaf structure, experiments'},
+        {id:'nutrition-animals',name:'Nutrition in Animals',sub:'Digestion, enzymes, alimentary canal, food tests, absorption'},
+        {id:'transport-plants',name:'Transport in Plants',sub:'Osmosis, xylem & phloem, transpiration, wilting'},
+        {id:'transport-animals',name:'Transport in Animals',sub:'Blood composition, heart structure, circulatory system, blood groups'},
+        {id:'respiration',name:'Respiration',sub:'Aerobic & anaerobic, respiratory quotient, breathing mechanism'},
+        {id:'excretion',name:'Excretion & Homeostasis',sub:'Kidney structure, urine formation, skin, homeostasis'},
+      ],
+      2:[
+        {id:'growth',name:'Growth & Development',sub:'Growth curves, mitosis, cell cycle, differentiation'},
+        {id:'genetics1',name:'Genetics I',sub:'DNA structure, chromosomes, Mendel\'s laws, Punnett squares, inheritance'},
+        {id:'evolution1',name:'Evolution',sub:'Darwin\'s theory, evidence, natural selection, adaptation, speciation'},
+        {id:'ecology1',name:'Ecology I',sub:'Ecosystem, food chains & webs, energy flow, sampling methods'},
+        {id:'support-movement',name:'Support & Movement',sub:'Skeleton, joints, muscles, locomotion, support in plants'},
+        {id:'drugs',name:'Drugs & Their Effects',sub:'Categories, effects of alcohol, tobacco, bhang on the body'},
+      ],
+      3:[
+        {id:'coordination',name:'Coordination & Response',sub:'Nervous system, brain, spinal cord, eye, ear, endocrine system, hormones'},
+        {id:'reproduction-animals',name:'Reproduction in Animals',sub:'Reproductive systems, fertilisation, pregnancy, birth, family planning'},
+        {id:'reproduction-plants',name:'Reproduction in Plants',sub:'Pollination, fertilisation, fruits, seeds, vegetative reproduction'},
+        {id:'genetics2',name:'Genetics II',sub:'Sex determination, sex-linked traits, mutation, genetic diseases'},
+        {id:'ecology2',name:'Ecology II',sub:'Populations, nutrient cycles, energy flow, human effects on environment'},
+      ],
+      4:[
+        {id:'genetics3',name:'Genetics III',sub:'Probability in genetics, co-dominance, multiple alleles, gene interaction'},
+        {id:'evolution2',name:'Evolution II',sub:'Origin of life, Lamarck vs Darwin, human evolution, fossil evidence'},
+        {id:'ecology3',name:'Ecology III',sub:'Conservation, pollution, pest control, agroforestry, environmental education'},
+        {id:'immunology',name:'Immunology',sub:'Immunity types, vaccines, HIV/AIDS, diseases & their control'},
+      ]
+    }
+  },
+  chemistry:{name:'Chemistry',icon:'⚗',c:'teal',tag:'t-teal',paper:'Paper 1, 2 & 3',
+    forms:{
+      1:[
+        {id:'intro-chem',name:'Introduction to Chemistry',sub:'Lab safety, apparatus, physical & chemical changes, mixtures'},
+        {id:'acids-bases1',name:'Acids, Bases & Indicators',sub:'Properties of acids & bases, neutral solutions, pH, indicators'},
+        {id:'oxygen-oxides',name:'Oxygen & Oxides',sub:'Preparation of oxygen, properties, types of oxides, combustion'},
+        {id:'water-chem',name:'Water',sub:'Sources, hardness, treatment, electrolysis of water, water of crystallisation'},
+        {id:'carbon',name:'Carbon & Its Compounds',sub:'Allotropes, carbon dioxide, carbon monoxide, carbonates, uses'},
+        {id:'periodic-table',name:'Periodic Table',sub:'Groups, periods, Dobereiner\'s law, Newlands, Mendeleev, modern table'},
+      ],
+      2:[
+        {id:'atomic-structure',name:'Structure of the Atom',sub:'Protons, neutrons, electrons, electron configuration, isotopes'},
+        {id:'chemical-families',name:'Chemical Families',sub:'Group I (alkali metals), Group VII (halogens), Group VIII (noble gases)'},
+        {id:'mole-concept',name:'The Mole Concept',sub:'Molar mass, Avogadro\'s number, stoichiometry, percentage composition'},
+        {id:'electrolysis1',name:'Electrochemistry I – Electrolysis',sub:'Electrolytes, electrodes, Faraday\'s laws, industrial electrolysis'},
+        {id:'salts',name:'Salts',sub:'Preparation methods, solubility rules, qualitative analysis of anions & cations'},
+      ],
+      3:[
+        {id:'energy-changes',name:'Energy Changes in Reactions',sub:'Exothermic & endothermic, bond energies, Hess\'s law, entropy'},
+        {id:'reaction-rates',name:'Rates of Reactions & Equilibrium',sub:'Factors affecting rate, Le Chatelier\'s principle, Kc expression'},
+        {id:'organic-chem1',name:'Organic Chemistry I',sub:'Hydrocarbons: alkanes, alkenes, naming (IUPAC), reactions, petroleum'},
+        {id:'metals',name:'Metals',sub:'Reactivity series, extraction of metals, rusting, alloys, uses'},
+        {id:'non-metals',name:'Non-metals',sub:'Nitrogen, sulfur, halogens, uses, manufacturing (Haber, Contact processes)'},
+      ],
+      4:[
+        {id:'organic-chem2',name:'Organic Chemistry II',sub:'Alcohols, carboxylic acids, esters, proteins, carbohydrates, polymers'},
+        {id:'radioactivity',name:'Radioactivity',sub:'Alpha, beta, gamma radiation, half-life, nuclear fission & fusion, applications'},
+        {id:'electrochemistry2',name:'Electrochemistry II – Cells',sub:'Galvanic cells, standard electrode potentials, electrochemical series'},
+        {id:'air-pollution',name:'Air & Water Pollution',sub:'Sources, effects, control, industrial chemistry, environmental chemistry'},
+      ]
+    }
+  },
+  physics:{name:'Physics',icon:'⚡',c:'amber',tag:'t-amber',paper:'Paper 1, 2 & 3',
+    forms:{
+      1:[
+        {id:'intro-physics',name:'Introduction to Physics',sub:'Measurement, SI units, significant figures, scientific notation, errors'},
+        {id:'forces1',name:'Forces',sub:'Types of forces, resultant force, vectors, Newton\'s laws introduction'},
+        {id:'pressure',name:'Pressure',sub:'Pressure in solids, liquids, gas pressure, Pascal\'s law, hydraulics, manometers'},
+        {id:'thermal-expansion',name:'Thermal Expansion',sub:'Expansion of solids, liquids, gases; bimetallic strip; anomalous expansion of water'},
+        {id:'heat-temperature',name:'Heat & Temperature',sub:'Thermometers, temperature scales, specific heat capacity, calorimetry'},
+        {id:'light1',name:'Reflection of Light',sub:'Laws of reflection, plane mirrors, characteristics of images, periscope'},
+      ],
+      2:[
+        {id:'magnetism',name:'Magnetism',sub:'Properties, magnetic field lines, types of magnets, Earth\'s magnetic field'},
+        {id:'electricity-basic',name:'Electricity I',sub:'Ohm\'s law, resistance, V-I graphs, series & parallel circuits, ammeters & voltmeters'},
+        {id:'turning-effects',name:'Turning Effect of Forces',sub:'Moments, principle of moments, levers, clockwise & anticlockwise moments'},
+        {id:'centre-gravity',name:'Equilibrium & Centre of Gravity',sub:'Types of equilibrium, centre of gravity, stability, toppling'},
+        {id:'curved-mirrors',name:'Reflection at Curved Mirrors',sub:'Concave & convex mirrors, focal length, image formation, mirror formula'},
+        {id:'waves',name:'Waves',sub:'Wave properties: amplitude, frequency, wavelength, speed; transverse & longitudinal'},
+        {id:'sound',name:'Sound',sub:'Production, propagation, speed, echoes, resonance, Doppler effect'},
+      ],
+      3:[
+        {id:'linear-motion',name:'Linear Motion',sub:'Velocity, acceleration, equations of motion, velocity-time graphs, projectiles'},
+        {id:'newtons-laws',name:'Newton\'s Laws of Motion',sub:'All 3 laws, momentum, impulse, conservation of momentum, collision types'},
+        {id:'work-energy',name:'Work, Energy & Power',sub:'Work done, KE, PE, conservation of energy, power, machines & efficiency'},
+        {id:'heating-current',name:'Heating Effect of Electric Current',sub:'Electrical power, energy, fuses, circuit breakers, domestic wiring'},
+        {id:'quantity-heat',name:'Quantity of Heat',sub:'Specific heat capacity, latent heat, change of state, heating & cooling curves'},
+        {id:'gas-laws',name:'Gas Laws',sub:'Boyle\'s law, Charles\'s law, Pressure law, ideal gas equation PV/T=nR'},
+      ],
+      4:[
+        {id:'thin-lenses',name:'Thin Lenses',sub:'Convex & concave lenses, lens formula 1/f=1/u+1/v, magnification, optical instruments'},
+        {id:'circular-motion',name:'Uniform Circular Motion',sub:'Angular velocity, centripetal force, banking, satellites, orbital motion'},
+        {id:'floating-sinking',name:'Floating & Sinking',sub:'Archimedes\' principle, upthrust, density, Bernoulli effect, applications'},
+        {id:'electromagnetic',name:'Electromagnetic Induction',sub:'Faraday\'s law, Lenz\'s law, generators, transformers, AC & DC'},
+        {id:'mains-electricity',name:'Mains Electricity',sub:'AC vs DC, power transmission, safety, earthing, household electrical fittings'},
+        {id:'cathode-rays',name:'Cathode Rays & X-Rays',sub:'CRT, properties of cathode rays, X-ray tube, uses & dangers of X-rays'},
+        {id:'photoelectric',name:'Photoelectric Effect',sub:'Einstein\'s equation, work function, threshold frequency, photocell applications'},
+        {id:'radioactivity2',name:'Radioactivity',sub:'Radioactive decay, half-life calculations, nuclear equations, fission & fusion, safety'},
+      ]
+    }
+  }
+};
+
+const SCHEDULE=[
+  {day:'Mon',time:'6:00–7:00am',subj:'Mathematics',focus:'Algebra (Form 1–2)',tip:'Morning is best for Maths'},
+  {day:'Mon',time:'5:00–6:00pm',subj:'Biology',focus:'Cell Biology & Nutrition',tip:'Use diagrams from KLB'},
+  {day:'Tue',time:'6:00–7:00am',subj:'Chemistry',focus:'Atomic Structure & Periodic Table',tip:'Draw electron configurations'},
+  {day:'Tue',time:'5:00–6:00pm',subj:'Physics',focus:'Linear Motion & Forces',tip:'Practice equations of motion'},
+  {day:'Wed',time:'6:00–7:00am',subj:'Mathematics',focus:'Geometry & Constructions',tip:'Use ruler & compass practice'},
+  {day:'Wed',time:'5:00–6:00pm',subj:'Chemistry',focus:'Mole Concept & Stoichiometry',tip:'Do 10 calculation questions'},
+  {day:'Thu',time:'6:00–7:00am',subj:'Biology',focus:'Genetics & Cell Division',tip:'Draw Punnett squares by hand'},
+  {day:'Thu',time:'5:00–6:00pm',subj:'Physics',focus:'Electricity & Circuits',tip:'Draw circuit diagrams'},
+  {day:'Fri',time:'6:00–7:00am',subj:'Mathematics',focus:'Statistics & Probability',tip:'Use past KCSE paper questions'},
+  {day:'Fri',time:'5:00–6:00pm',subj:'All Subjects',focus:'KCSE Past Paper Practice',tip:'Time yourself: 1 min per mark'},
+  {day:'Sat',time:'8:00–11:00am',subj:'Deep Revision',focus:'Weakest topics from the week',tip:'Teach the topic to someone'},
+  {day:'Sun',time:'4:00–5:00pm',subj:'Light Review',focus:'Go through all notes briefly',tip:'Rest well — sleep consolidates memory'},
+];
+
+const TIPS=[
+  {h:'Use KLB + this app together',b:'This app teaches KCSE content. But always keep your KLB textbook open too. Read the textbook, then use this app to test yourself.'},
+  {h:'Start with Form 1 foundations',b:'If you\'re scoring E grades, Form 1 content has gaps. Start from Form 1 in every subject before moving to Form 3 & 4.'},
+  {h:'Active recall beats re-reading',b:'Close your notes and recall everything you just read. This is 3× more effective than reading again. Use the Quiz after every lesson.'},
+  {h:'Spaced repetition',b:'Study a topic today. Review it tomorrow. Then in 3 days. Then in a week. This is how KCSE toppers build permanent memory.'},
+  {h:'Feynman Technique',b:'After studying, explain the topic out loud in simple Kiswahili or English as if teaching someone younger. Where you get stuck = what to re-study.'},
+  {h:'KCSE past papers are gold',b:'After every topic, find the past paper questions on that exact topic from KNEC. The examiner often repeats question types.'},
+];
+
+function pct(sub,form){
+  const ts=SUBJ[sub].forms[form];
+  const done=ts.filter(t=>S.progress[sub+'_'+form+'_'+t.id]).length;
+  return{done,total:ts.length,pct:Math.round(done/ts.length*100)};
+}
+function totalDone(){return Object.keys(S.progress).filter(k=>S.progress[k]).length;}
+function totalTopics(){return Object.values(SUBJ).reduce((a,s)=>a+Object.values(s.forms).reduce((b,ts)=>b+ts.length,0),0);}
+function subjectDone(sub){
+  return Object.values(SUBJ[sub].forms).reduce((a,ts)=>a+ts.filter(t=>S.progress[sub+'_'+Object.entries(SUBJ[sub].forms).find(([f,arr])=>arr.includes(t))[0]+'_'+t.id]).length,0);
+}
+function subjectTotal(sub){return Object.values(SUBJ[sub].forms).reduce((a,ts)=>a+ts.length,0);}
+
+function getSubColor(sub){return S.view==='subject'?{math:'blue',biology:'green',chemistry:'teal',physics:'amber'}[sub||S.subject]:'blue';}
+
+function render(){
+  const bb=document.getElementById('backBtn');
+  const bc=document.getElementById('breadcrumb');
+  bb.style.display=S.view==='dashboard'?'none':'block';
+  if(S.view==='dashboard'){bc.textContent='';renderDash();}
+  else if(S.view==='subject'){bc.innerHTML='<b>'+SUBJ[S.subject].name+'</b>';renderSubject();}
+  else if(S.view==='lesson'){bc.innerHTML=SUBJ[S.subject].name+' › Form '+S.form+' › <b>'+S.topicName+'</b>';renderLesson();}
+  else if(S.view==='quiz'){bc.innerHTML=SUBJ[S.subject].name+' › F'+S.form+' › <b>Quiz</b>';renderQuiz();}
+  else if(S.view==='schedule'){bc.innerHTML='<b>Study Timetable</b>';renderSchedule();}
+}
+
+function renderDash(){
+  const td=totalDone(),tt=totalTopics();
+  let motivMsg='Every topic you complete is one step closer to your A grade. Let\'s go! 💪';
+  if(td>=10)motivMsg='Great progress! '+td+' topics done. Keep the momentum going!';
+  if(td>=20)motivMsg='Excellent! You\'re building real KCSE knowledge. Keep pushing!';
+  const html=`
+  <div class="hero">
+    <div class="hero-title">Welcome to KCSE Prep Academy</div>
+    <div class="hero-sub">Covering the full <b>KLB Form 1–4</b> curriculum for Mathematics, Biology, Chemistry and Physics. Study each topic, take KCSE-style quizzes, and track your progress.</div>
+    <div class="motiv">${motivMsg}</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">${td}</div><div class="stat-l">Topics done</div></div>
+    <div class="stat"><div class="stat-n">${tt-td}</div><div class="stat-l">Remaining</div></div>
+    <div class="stat"><div class="stat-n">${tt}</div><div class="stat-l">Total topics</div></div>
+    <div class="stat"><div class="stat-n">${Math.round(td/tt*100)}%</div><div class="stat-l">Progress</div></div>
+  </div>
+  ${td===0?`<div class="alert-bar">📌 Tip: Since you\'re just starting, begin with <b>Form 1</b> in each subject. Build the foundation first — then Forms 2, 3 and 4 will be much easier.</div>`:''}
+  <div class="section-hd">Subjects — Click to Start</div>
+  <div class="grid2">
+    ${Object.entries(SUBJ).map(([k,s])=>{
+      const d=Object.entries(s.forms).reduce((a,[f,ts])=>a+ts.filter(t=>S.progress[k+'_'+f+'_'+t.id]).length,0);
+      const tot=subjectTotal(k);
+      const p=Math.round(d/tot*100);
+      return`<div class="card" onclick="openSubject('${k}')">
+        <span class="card-icon">${s.icon}</span>
+        <div class="card-title">${s.name} <span class="kcse-badge">${s.paper}</span></div>
+        <div class="card-sub">Form 1–4 KLB curriculum · ${tot} topics</div>
+        <span class="tag ${s.tag}">${d}/${tot} topics done</span>
+        <div class="pbar"><div class="pfill ${s.c}" style="width:${p}%"></div></div>
+      </div>`;
+    }).join('')}
+  </div>`;
+  document.getElementById('content').innerHTML=html;
+}
+
+function renderSubject(){
+  const s=SUBJ[S.subject];
+  const forms=[1,2,3,4];
+  const p=pct(S.subject,S.form);
+  const colClass={math:'',biology:'green-tab',chemistry:'teal-tab',physics:'amber-tab'}[S.subject];
+  const html=`
+  <div style="margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <span style="font-size:20px">${s.icon}</span>
+    <div>
+      <div style="font-size:16px;font-weight:500">${s.name}</div>
+      <div style="font-size:12px;color:var(--color-text-secondary)">${s.paper} · KLB Form 1–4</div>
+    </div>
+  </div>
+  <div class="form-tabs">
+    ${forms.map(f=>`<button class="form-tab ${colClass} ${S.form===f?'active':''}" onclick="setForm(${f})">Form ${f} <span style="opacity:0.8;font-size:11px">(${pct(S.subject,f).done}/${pct(S.subject,f).total})</span></button>`).join('')}
+  </div>
+  <div class="pbar" style="margin-bottom:12px"><div class="pfill ${s.c}" style="width:${p.pct}%"></div></div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">Form ${S.form}: ${p.done} of ${p.total} topics completed (${p.pct}%)</div>
+  <div class="grid3">
+  ${s.forms[S.form].map(t=>{
+    const done=S.progress[S.subject+'_'+S.form+'_'+t.id];
+    return`<div class="topic-card ${done?'done':''}">
+      ${done?'<span class="done-badge">✓ Done</span>':''}
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-sub">${t.sub}</div>
+      <div class="tc-btns">
+        <button class="btn-sm-p" onclick="openLesson('${t.id}','${t.name.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">📖 Lesson</button>
+        <button class="btn-sm-s" onclick="startQuiz('${t.id}','${t.name.replace(/'/g,"\\'").replace(/"/g,"&quot;")}')">📝 Quiz</button>
+      </div>
+    </div>`;
+  }).join('')}
+  </div>`;
+  document.getElementById('content').innerHTML=html;
+}
+
+function renderLesson(){
+  if(S.loading){document.getElementById('content').innerHTML=`<div class="loading-box"><div class="spinner"></div><div>Your KCSE tutor is preparing the <b>${S.topicName}</b> lesson…</div><div style="font-size:12px">Based on KLB ${SUBJ[S.subject].name} Form ${S.form}</div></div>`;return;}
+  if(S.err){document.getElementById('content').innerHTML=`<div class="err">${S.err}</div><div class="btn-row"><button class="btn-p" onclick="openLesson('${S.topicId}','${S.topicName}')">Retry</button></div>`;return;}
+  const done=S.progress[S.subject+'_'+S.form+'_'+S.topicId];
+  document.getElementById('content').innerHTML=`
+  <div class="lesson-wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <div style="font-size:18px;font-weight:500">${S.topicName}</div>
+      <span class="tag t-purple">KLB Form ${S.form}</span>
+      ${done?'<span class="tag t-green">✓ Completed</span>':''}
+    </div>
+    <div id="lesson-md">${renderMd(S.lesson)}</div>
+    ${S.qc?renderQC():''}
+    <div class="btn-row" style="margin-top:20px;padding-top:14px;border-top:0.5px solid var(--color-border-tertiary)">
+      <button class="btn-p" onclick="startQuiz('${S.topicId}','${S.topicName.replace(/'/g,"\\'")}')">📝 Take KCSE Quiz →</button>
+      <button class="btn-s" onclick="markDone()">✓ Mark Topic Done</button>
+    </div>
+  </div>`;
+}
+
+function renderQC(){
+  const q=S.qc;
+  const sel=S.qcAnswers[0];
+  const submitted=sel!==undefined;
+  return`<div class="quick-check">
+    <div class="qc-title">⚡ Quick Check — Test Yourself</div>
+    <div class="qc-q">${q.question}</div>
+    ${q.options.map((opt,i)=>{
+      let cls='qc-opt';
+      if(submitted){
+        if(i===q.correct)cls+=' qc-correct';
+        else if(i===sel&&sel!==q.correct)cls+=' qc-wrong';
+      }
+      return`<button class="${cls}" onclick="${submitted?'':'checkQC('+i+')'}">${opt}</button>`;
+    }).join('')}
+    ${submitted?`<div class="qc-feedback" style="color:${sel===q.correct?'#085041':'#A32D2D'}">${sel===q.correct?'✓ Correct! '+q.explanation:'✗ The correct answer is: '+q.options[q.correct]+'. '+q.explanation}</div>`:''}
+  </div>`;
+}
+
+function renderQuiz(){
+  if(S.loading){document.getElementById('content').innerHTML=`<div class="loading-box"><div class="spinner"></div><div>Generating your KCSE-style quiz on <b>${S.topicName}</b>…</div></div>`;return;}
+  if(S.err){document.getElementById('content').innerHTML=`<div class="err">${S.err}</div><div class="btn-row"><button class="btn-p" onclick="startQuiz('${S.topicId}','${S.topicName}')">Retry</button></div>`;return;}
+  if(!S.quiz||!S.quiz.questions){document.getElementById('content').innerHTML=`<div class="err">Quiz generation failed. Please retry.</div><div class="btn-row"><button class="btn-p" onclick="startQuiz('${S.topicId}','${S.topicName}')">Retry</button></div>`;return;}
+  const qs=S.quiz.questions;
+  let score=0;if(S.quizSubmitted)score=qs.filter((q,i)=>S.quizAnswers[i]===q.answer).length;
+  const pct2=S.quizSubmitted?Math.round(score/qs.length*100):0;
+  const msg=pct2===100?'🎉 Perfect! You\'ve mastered this topic!':pct2>=80?'🌟 Excellent work! You\'re getting there!':pct2>=60?'👍 Good effort! Study the explanations below.':pct2>=40?'📚 Keep going — review the lesson and try again.':'💪 Don\'t give up! Start with the lesson, then retry.';
+  let html='';
+  if(S.quizSubmitted){
+    html+=`<div class="score-card">
+      <div class="score-n" style="color:${pct2>=80?'#1D9E75':pct2>=60?'#BA7517':'#A32D2D'}">${score}/${qs.length}</div>
+      <div class="score-l">${pct2}% — ${SUBJ[S.subject].name} Form ${S.form} | ${S.topicName}</div>
+      <div class="score-msg">${msg}</div>
+    </div>`;
+    html+=`<div class="btn-row" style="margin-bottom:14px">
+      <button class="btn-p" onclick="startQuiz('${S.topicId}','${S.topicName.replace(/'/g,"\\'")}')">🔁 Retake Quiz</button>
+      <button class="btn-s" onclick="openLesson('${S.topicId}','${S.topicName.replace(/'/g,"\\'")}')">📖 Back to Lesson</button>
+      <button class="btn-s" onclick="markDone()">✓ Mark Done</button>
+    </div>`;
+  } else {
+    const ans=Object.keys(S.quizAnswers).length;
+    html+=`<div class="q-status">${ans} of ${qs.length} questions answered · <b>${S.topicName}</b> · Form ${S.form}</div>`;
+  }
+  html+=qs.map((q,i)=>{
+    const sel=S.quizAnswers[i];
+    return`<div class="quiz-q">
+      <div class="quiz-qtext">${i+1}. ${q.question}</div>
+      ${q.options.map(opt=>{
+        const l=opt[0];let cls='quiz-opt';
+        if(S.quizSubmitted){if(l===q.answer)cls+=' right';else if(l===sel&&sel!==q.answer)cls+=' wrong';}
+        else if(sel===l)cls+=' sel';
+        return`<button class="${cls}" onclick="${S.quizSubmitted?'':'selectA('+i+',"'+l+'")'}">${opt}</button>`;
+      }).join('')}
+      ${S.quizSubmitted&&q.explanation?`<div class="quiz-exp">💡 ${q.explanation}</div>`:''}
+    </div>`;
+  }).join('');
+  if(!S.quizSubmitted){
+    const ans=Object.keys(S.quizAnswers).length;
+    html+=`<div class="btn-row"><button class="btn-p" onclick="submitQuiz()" ${ans<qs.length?'disabled':''}>Submit Quiz (${ans}/${qs.length} answered)</button></div>`;
+  }
+  document.getElementById('content').innerHTML=html;
+}
+
+function renderSchedule(){
+  const html=`
+  <div class="hero" style="margin-bottom:16px">
+    <div class="hero-title">KCSE Study Timetable</div>
+    <div class="hero-sub">Study every day using this schedule. Consistency beats cramming. <b>2 sessions per day</b> — morning and evening — will move you from E to A within months.</div>
+  </div>
+  <table class="sched-tbl">
+    <thead><tr><th>Day</th><th>Time</th><th>Subject</th><th>Focus</th><th>Strategy</th></tr></thead>
+    <tbody>${SCHEDULE.map(r=>`<tr>
+      <td><span class="pill">${r.day}</span></td>
+      <td style="color:var(--color-text-secondary);font-size:11px">${r.time}</td>
+      <td style="font-weight:500;font-size:13px">${r.subj}</td>
+      <td style="font-size:12px">${r.focus}</td>
+      <td style="font-size:12px;color:var(--color-text-secondary)">${r.tip}</td>
+    </tr>`).join('')}</tbody>
+  </table>
+  <div class="section-hd" style="margin-top:20px">Proven Study Strategies for KCSE Success</div>
+  ${TIPS.map(t=>`<div class="tip-c"><div class="tip-h">${t.h}</div><div class="tip-b">${t.b}</div></div>`).join('')}`;
+  document.getElementById('content').innerHTML=html;
+}
+
+function renderMd(text){
+  if(!text)return'';
+  const lines=text.split('\n');const out=[];let inUl=false,inOl=false;
+  for(const line of lines){
+    const l=line.trim();
+    if(l.startsWith('## ')){close();out.push('<h2>'+mdInline(l.slice(3))+'</h2>');}
+    else if(l.startsWith('### ')){close();out.push('<h3>'+mdInline(l.slice(4))+'</h3>');}
+    else if(/^\d+\. /.test(l)){if(inUl){out.push('</ul>');inUl=false;}if(!inOl){out.push('<ol>');inOl=true;}out.push('<li>'+mdInline(l.replace(/^\d+\. /,''))+'</li>');}
+    else if(/^[-•] /.test(l)){if(inOl){out.push('</ol>');inOl=false;}if(!inUl){out.push('<ul>');inUl=true;}out.push('<li>'+mdInline(l.replace(/^[-•] /,''))+'</li>');}
+    else{close();if(l)out.push('<p>'+mdInline(l)+'</p>');}
+  }
+  close();
+  function close(){if(inUl){out.push('</ul>');inUl=false;}if(inOl){out.push('</ol>');inOl=false;}}
+  return out.join('');
+}
+function mdInline(t){return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>');}
+
+async function callClaude(userMsg,sysMsg){
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sysMsg,messages:[{role:'user',content:userMsg}]})
+  });
+  const d=await r.json();
+  if(!r.ok)throw new Error(d.error?.message||'API error');
+  return d.content.map(b=>b.text||'').join('');
+}
+
+function openSubject(k){S.view='subject';S.subject=k;S.form=1;render();}
+function setForm(f){S.form=f;render();}
+
+async function openLesson(id,name){
+  S.view='lesson';S.topicId=id;S.topicName=name;S.lesson=null;S.qc=null;S.qcAnswers={};S.loading=true;S.err=null;render();
+  const s=SUBJ[S.subject];
+  try{
+    const sys=`You are Kenya's best KCSE teacher. You teach using the KLB textbook. Your students go from failing to scoring A grades. Your lessons are clear, thorough, and exam-focused. Use simple English. Include all KCSE-required content.`;
+    const txt=await callClaude(`Create a complete KCSE lesson on "${name}" for Form ${S.form} ${s.name} based on the KLB textbook.
+
+## What You Will Learn
+(3 clear learning objectives for this KCSE topic)
+
+## Key Terms & Definitions
+(All important terms the KCSE examiner will test — define each clearly)
+
+## Lesson Notes
+(Full, thorough notes following KLB content. Explain everything step by step. Include any important diagrams students should draw in their exercise book)
+
+## Formulas, Laws & Rules
+(Every formula, law or equation for this topic. Show each formula and explain each symbol)
+
+## KCSE Worked Examples
+(3 fully solved problems at KCSE level. Show all working step by step)
+
+## What KCSE Examiners Test
+(Specific question types, common phrasing, mark allocation tips)
+
+## Common Mistakes Kenyan Students Make
+(4 specific mistakes — and exactly how to avoid them)
+
+## Exam Checklist
+(10 things to know for KCSE — as bullet points starting with "I can...")`,sys);
+    S.lesson=txt;
+
+    const qcTxt=await callClaude(`Create 1 quick-check question on "${name}" for KCSE Form ${S.form} ${s.name}.
+Return ONLY JSON: {"question":"...","options":["option A","option B","option C","option D"],"correct":0,"explanation":"..."}
+correct is the index (0,1,2,3) of the right answer. No markdown.`,sys);
+    try{let c=qcTxt.replace(/```json|```/g,'').trim();const st=c.indexOf('{');if(st>0)c=c.slice(st);S.qc=JSON.parse(c);}catch(e){S.qc=null;}
+    S.loading=false;render();
+  }catch(e){S.loading=false;S.err='Could not load lesson: '+e.message;render();}
+}
+
+function checkQC(i){S.qcAnswers[0]=i;const el=document.getElementById('lesson-md');if(el)el.parentElement.querySelector('.quick-check')&&(document.querySelector('.quick-check').outerHTML=renderQC());render();}
+
+async function startQuiz(id,name){
+  S.view='quiz';S.topicId=id;S.topicName=name;S.quiz=null;S.quizAnswers={};S.quizSubmitted=false;S.loading=true;S.err=null;render();
+  const s=SUBJ[S.subject];
+  try{
+    const sys=`You are a KCSE examiner for ${s.name}. Create questions exactly like real KCSE past papers. Return ONLY valid JSON, nothing else.`;
+    const txt=await callClaude(`Generate a 10-question KCSE-style multiple choice quiz on "${name}" for Form ${S.form} ${s.name}. Base questions on KLB textbook and past KCSE papers.
+
+Return ONLY this JSON (no markdown, no extra text):
+{"questions":[{"question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"answer":"A","explanation":"Short explanation of the correct answer"}]}
+
+Q1-3: Basic recall/definitions (Form ${S.form} level)
+Q4-7: Understanding and application (KCSE Paper 1 style)  
+Q8-10: Analysis and calculation (KCSE Paper 2 style)
+All distractors should be plausible. One answer only. Answer field is just the letter A, B, C or D.`,sys);
+    let c=txt.replace(/```json|```/g,'').trim();const st=c.indexOf('{');if(st>0)c=c.slice(st);
+    S.quiz=JSON.parse(c);S.loading=false;render();
+  }catch(e){S.loading=false;S.err='Quiz error: '+e.message;render();}
+}
+
+function selectA(qi,l){S.quizAnswers[qi]=l;render();}
+function submitQuiz(){if(Object.keys(S.quizAnswers).length<S.quiz.questions.length){alert('Please answer all 10 questions first.');return;}S.quizSubmitted=true;const sc=S.quiz.questions.filter((q,i)=>S.quizAnswers[i]===q.answer).length;if(sc>=8)markDone(true);render();}
+function markDone(silent){S.progress[S.subject+'_'+S.form+'_'+S.topicId]=true;if(!silent)render();}
+function goBack(){if(S.view==='lesson'||S.view==='quiz'){S.view='subject';render();}else{S.view='dashboard';render();}}
+function goSchedule(){S.view='schedule';render();}
+render();
+</script>

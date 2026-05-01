@@ -1,0 +1,136 @@
+// KCSE Mastery App — Full LMS Schema (SQLite)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── SUBJECTS & TOPICS ───────────────────────────────────
+
+model Subject {
+  id        String   @id @default(uuid())
+  name      String   @unique // e.g. "Mathematics"
+  slug      String   @unique // e.g. "mathematics"
+  icon      String   @default("📘")
+  paper     String   @default("") // e.g. "Paper 1 & 2"
+  topics    Topic[]
+  createdAt DateTime @default(now())
+}
+
+model Topic {
+  id         String      @id @default(uuid())
+  name       String // e.g. "The Mole Concept"
+  slug       String      @unique
+  form       Int // 1, 2, 3 or 4
+  summary    String      @default("") // short description
+  subject    Subject     @relation(fields: [subjectId], references: [id])
+  subjectId  String
+  studyNotes StudyNote[]
+  questions  Question[]
+  createdAt  DateTime    @default(now())
+}
+
+// ─── STUDY NOTES (KLB content, Made Familiar, etc.) ─────
+
+model StudyNote {
+  id        String   @id @default(uuid())
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  topicId   String
+  title     String
+  content   String // Markdown text — full KLB lesson notes
+  imageUrl  String? // diagram URL (served from /public)
+  videoUrl  String? // YouTube embed or local video
+  pdfUrl    String? // link to Made Familiar PDF
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── QUESTIONS & MARKING SCHEMES ────────────────────────
+
+model Question {
+  id            String         @id @default(uuid())
+  topic         Topic          @relation(fields: [topicId], references: [id])
+  topicId       String
+  questionText  String
+  imageUrl      String?
+  videoUrl      String? // walkthrough video for this question
+  marks         Int            @default(1)
+  year          Int? // KCSE year e.g. 2019
+  paper         String? // e.g. "Paper 1", "Paper 2"
+  questionType  String         @default("MCQ") // MCQ | STRUCTURED | ESSAY
+  options       String? // JSON array for MCQ: ["A. ...", "B. ...", ...]
+  correctAnswer String? // "A" for MCQ, or full text for structured
+  markingScheme MarkingScheme?
+  userProgress  UserProgress[]
+  createdAt     DateTime       @default(now())
+}
+
+model MarkingScheme {
+  id         String   @id @default(uuid())
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String   @unique
+  content    String // Step-by-step mark allocation
+  createdAt  DateTime @default(now())
+}
+
+// ─── USER & PROGRESS TRACKING ───────────────────────────
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String?        @unique
+  passwordHash  String?
+  role          String         @default("STUDENT") // STUDENT | ADMIN
+  progress      UserProgress[]
+  studySessions StudySession[]
+  streak        Streak?
+  createdAt     DateTime       @default(now())
+}
+
+model UserProgress {
+  id             String   @id @default(uuid())
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  question       Question @relation(fields: [questionId], references: [id])
+  questionId     String
+  scoreReceived  Int      @default(0)
+  maxScore       Int      @default(1)
+  nextReviewDate DateTime @default(now())
+  easeFactor     Float    @default(2.5) // SM-2 algorithm
+  repetitions    Int      @default(0)
+  interval       Int      @default(0) // days until next review
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([userId, questionId])
+}
+
+// ─── GAMIFICATION ───────────────────────────────────────
+
+model StudySession {
+  id             String   @id @default(uuid())
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  topicsCovered  String   @default("") // JSON array of topic IDs
+  questionsCount Int      @default(0)
+  correctCount   Int      @default(0)
+  duration       Int? // minutes
+  startTime      DateTime @default(now())
+  endTime        DateTime?
+}
+
+model Streak {
+  id            String    @id @default(uuid())
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String    @unique
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastStudyDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
