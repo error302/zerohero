@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "question": "Simplify: 3x + 2x",
+      "options": ["5x", "5x²", "6x", "5"],
+      "answer": "A",
+      "explanation": "3x + 2x = (3+2)x = 5x"
+    },
+    {
+      "question": "If x = 3, find the value of 2x + 5",
+      "options": ["11", "8", "10", "6"],
+      "answer": "A",
+      "explanation": "2(3) + 5 = 6 + 5 = 11"
+    },
+    {
+      "question": "Solve: x + 7 = 15",
+      "options": ["x = 8", "x = 7", "x = 22", "x = -8"],
+      "answer": "A",
+      "explanation": "x = 15 - 7 = 8"
+    },
+    {
+      "question": "Simplify: 5(a + b) - 3(a + b)",
+      "options": ["2a + 2b", "2a + b", "5a", "2(a + b)"],
+      "answer": "A",
+      "explanation": "5(a+b) - 3(a+b) = (5-3)(a+b) = 2(a+b) = 2a + 2b"
+    },
+    {
+      "question": "Factorize: 6x + 9",
+      "options": ["3(2x + 3)", "2(3x + 9)", "6(x + 9)", "3(6x + 3)"],
+      "answer": "A",
+      "explanation": "HCF of 6x and 9 is 3. 6x + 9 = 3(2x + 3)"
+    }
+  ]
+}

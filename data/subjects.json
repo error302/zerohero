@@ -1,0 +1,155 @@
+{
+  "math": {
+    "name": "Mathematics",
+    "icon": "∑",
+    "c": "blue",
+    "tag": "t-blue",
+    "paper": "Paper 1 and 2",
+    "forms": {
+      "1": [
+        {
+          "id": "natural-numbers",
+          "name": "Natural Numbers",
+          "sub": "Place value, number bases, HCF and LCM, prime numbers"
+        },
+        {
+          "id": "decimals",
+          "name": "Decimals & Percentages",
+          "sub": "Operations, rounding off, significant figures, percentage change"
+        }
+      ],
+      "2": [
+        {
+          "id": "fractions",
+          "name": "Fractions",
+          "sub": "Types, operations, mixed numbers, decimal fractions"
+        }
+      ],
+      "3": [
+        {
+          "id": "algebra-intro",
+          "name": "Algebraic Expressions",
+          "sub": "Simplification, substitution, linear equations, forming equations"
+        }
+      ],
+      "4": [
+        {
+          "id": "quadratic-eqn",
+          "name": "Quadratic Equations & Expressions",
+          "sub": "Factorisation, completing the square, quadratic formula, graphs"
+        }
+      ]
+    }
+  },
+  "biology": {
+    "name": "Biology",
+    "icon": "🍃",
+    "c": "green",
+    "tag": "t-green",
+    "paper": "Paper 1, 2 and 3",
+    "forms": {
+      "1": [
+        {
+          "id": "intro-bio",
+          "name": "Introduction to Biology",
+          "sub": "Characteristics of living things, branches of biology, biology apparatus"
+        }
+      ],
+      "2": [
+        {
+          "id": "cell-bio",
+          "name": "Cell Structure & Organisation",
+          "sub": "Plant & animal cells, organelles, tissues, organs, organ systems"
+        }
+      ],
+      "3": [
+        {
+          "id": "genetics1",
+          "name": "Genetics I",
+          "sub": "DNA structure, chromosomes, Mendel's laws, Punnett squares, inheritance"
+        }
+      ],
+      "4": [
+        {
+          "id": "ecology1",
+          "name": "Ecology I",
+          "sub": "Ecosystem, food chains and webs, energy flow, sampling methods"
+        }
+      ]
+    }
+  },
+  "chemistry": {
+    "name": "Chemistry",
+    "icon": "⚗️",
+    "c": "teal",
+    "tag": "t-teal",
+    "paper": "Paper 1, 2 and 3",
+    "forms": {
+      "1": [
+        {
+          "id": "intro-chem",
+          "name": "Introduction to Chemistry",
+          "sub": "Lab safety, apparatus, physical & chemical changes, mixtures"
+        }
+      ],
+      "2": [
+        {
+          "id": "atomic-structure",
+          "name": "Structure of the Atom",
+          "sub": "Protons, neutrons, electrons, electron configuration, isotopes"
+        }
+      ],
+      "3": [
+        {
+          "id": "organic-chem1",
+          "name": "Organic Chemistry I",
+          "sub": "Hydrocarbons: alkanes, alkenes, naming (IUPAC), reactions, petroleum"
+        }
+      ],
+      "4": [
+        {
+          "id": "electrochemistry2",
+          "name": "Electrochemistry II - Cells",
+          "sub": "Galvanic cells, standard electrode potentials, electrochemical series"
+        }
+      ]
+    }
+  },
+  "physics": {
+    "name": "Physics",
+    "icon": "🔬",
+    "c": "amber",
+    "tag": "t-amber",
+    "paper": "Paper 1, 2 and 3",
+    "forms": {
+      "1": [
+        {
+          "id": "intro-physics",
+          "name": "Introduction to Physics",
+          "sub": "Measurement, SI units, significant figures, scientific notation, errors"
+        }
+      ],
+      "2": [
+        {
+          "id": "electricity-basic",
+          "name": "Electricity I",
+          "sub": "Ohm's law, resistance, V-I graphs, series & parallel circuits, ammeters & voltmeters"
+        }
+      ],
+      "3": [
+        {
+          "id": "linear-motion",
+          "name": "Linear Motion",
+          "sub": "Velocity, acceleration, equations of motion, velocity-time graphs, projectiles"
+        }
+      ],
+      "4": [
+        {
+          "id": "thin-lenses",
+          "name": "Thin Lenses",
+          "sub": "Convex & concave lenses, lens formula 1/f=1/u+1/v, magnification, optical instruments"
+        }
+      ]
+    }
+  }
+}

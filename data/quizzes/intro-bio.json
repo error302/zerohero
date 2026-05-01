@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "question": "Which of the following is an example of heterotrophic nutrition?",
+      "options": ["A plant making food through photosynthesis", "A fungus absorbing nutrients from dead matter", "A bacterium producing its own food using sunlight", "An alga producing oxygen in water"],
+      "answer": "B",
+      "explanation": "Heterotrophic nutrition involves obtaining food by consuming other organisms. Fungi absorb nutrients from dead or decaying matter, making them heterotrophs."
+    },
+    {
+      "question": "The removal of waste products and toxic substances from an organism is called:",
+      "options": ["Nutrition", "Respiration", "Excretion", "Reproduction"],
+      "answer": "C",
+      "explanation": "Excretion is the process by which waste products and toxic substances are removed from an organism."
+    },
+    {
+      "question": "Which branch of biology would you study to understand the behavior of elephants in the wild?",
+      "options": ["Botany", "Microbiology", "Zoology", "Anatomy"],
+      "answer": "C",
+      "explanation": "Zoology is the branch of biology that deals with the study of animals, including their behavior."
+    },
+    {
+      "question": "Which apparatus is most suitable for measuring exactly 25.0 cm³ of a liquid?",
+      "options": ["Beaker", "Test tube", "Graduated cylinder", "Watch glass"],
+      "answer": "C",
+      "explanation": "A graduated cylinder is designed for measuring precise volumes of liquids, typically to the nearest 0.1 cm³."
+    },
+    {
+      "question": "Which of the following characteristics is demonstrated when a mimosa plant's leaves fold up when touched?",
+      "options": ["Nutrition", "Respiration", "Sensitivity", "Excretion"],
+      "answer": "C",
+      "explanation": "The folding of leaves in response to touch demonstrates sensitivity - the ability to detect and respond to changes in the environment."
+    }
+  ]
+}
