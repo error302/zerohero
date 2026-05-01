@@ -156,6 +156,24 @@ export default function QuizClient({ questions, topic }) {
               <p className="text-sm">The answer is: <strong>{question.correctAnswer}</strong></p>
             </div>
             
+            {/* Interactive Video Walkthrough */}
+            {question.videoUrl && (
+              <div className="w-full rounded-xl overflow-hidden border border-blue-500/30 bg-surface">
+                <div className="bg-blue-500/20 px-4 py-2 flex items-center gap-2">
+                  <span className="text-blue-400">📺</span>
+                  <span className="text-sm font-bold text-blue-100">Video Walkthrough</span>
+                </div>
+                <div className="aspect-video w-full">
+                  <iframe 
+                    src={question.videoUrl} 
+                    className="w-full h-full" 
+                    allowFullScreen
+                    title="Video Explanation"
+                  />
+                </div>
+              </div>
+            )}
+            
             <div className="glass-panel p-6 border-blue-500/30 bg-blue-900/10">
               <h4 className="text-center text-white font-bold mb-4">How hard was it to remember this?</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

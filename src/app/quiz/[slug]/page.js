@@ -30,7 +30,8 @@ export default async function QuizPage({ params }) {
         questionText: `KCSE 2018: Explain the significance of ${topic.name} in practical applications.`,
         questionType: "MCQ",
         options: JSON.stringify(["It improves efficiency", "It has no effect", "It increases mass", "It reduces volume"]),
-        correctAnswer: "It improves efficiency"
+        correctAnswer: "It improves efficiency",
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Dummy video for demonstration
       },
       {
         id: "dummy-2",
